@@ -1,0 +1,81 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-01-31T09:11:55Z'
+  media_types:
+    - name: 'IntelliTrend Mobile'
+      type: WEBHOOK
+      parameters:
+        - name: body
+          value: '{ALERT.MESSAGE}'
+        - name: entity_id
+          value: '{EVENT.ID}'
+        - name: sendto
+          value: '{ALERT.SENDTO}'
+        - name: severity
+          value: '{EVENT.NSEVERITY}'
+        - name: title
+          value: '{ALERT.SUBJECT}'
+        - name: type
+          value: problem
+      script: |
+        var logtag = '[ IntelliTrend Mobile Webhook ] ';
+        try {
+          var params = JSON.parse(value);
+          var userparams = JSON.parse(params.sendto);
+          var body = {
+            data: {
+              entity_id: params.entity_id,
+              userparams: params.sendto,
+              timestamp: String(Date.now()),
+              type: params.type,
+              title: params.title,
+              body: params.body,
+              severity: params.severity,
+            },
+            ppi: userparams.ppi,
+            title: params.title,
+            body: params.body,
+          };
+        
+          var req = new HttpRequest();
+          req.addHeader('Content-Type: application/json');
+          req.addHeader('X-Protocol-Version: 1');
+          
+          var bodystr = JSON.stringify(body);
+          Zabbix.Log(4, logtag + 'Request: ' + bodystr);
+          return req.post("https://push.intellitrend.de/zabbix/device/push", bodystr);
+        } catch (error) {
+            Zabbix.Log(3, logtag + 'ERROR: ' + error);
+            throw 'Sending failed: ' + error;
+        }
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: 'Problem: {EVENT.NAME}'
+          message: |
+            Problem started at {EVENT.TIME} on {EVENT.DATE}
+            Problem name: {EVENT.NAME}
+            Host: {HOST.NAME}
+            Severity: {EVENT.SEVERITY}
+            Operational data: {EVENT.OPDATA}
+            Original problem ID: {EVENT.ID}
+            {TRIGGER.URL}
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: 'Resolved in {EVENT.DURATION}: {EVENT.NAME}'
+          message: |
+            Problem has been resolved at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}
+            Problem name: {EVENT.NAME}
+            Problem duration: {EVENT.DURATION}
+            Host: {HOST.NAME}
+            Severity: {EVENT.SEVERITY}
+            Original problem ID: {EVENT.ID}
+            {TRIGGER.URL}
+        - event_source: TRIGGERS
+          operation_mode: UPDATE
+          subject: 'Updated problem in {EVENT.AGE}: {EVENT.NAME}'
+          message: |
+            {USER.FULLNAME} {EVENT.UPDATE.ACTION} problem at {EVENT.UPDATE.DATE} {EVENT.UPDATE.TIME}.
+            {EVENT.UPDATE.MESSAGE}
+            
+            Current problem status is {EVENT.STATUS}, age is {EVENT.AGE}, acknowledged: {EVENT.ACK.STATUS}.

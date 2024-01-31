@@ -1,0 +1,1 @@
+# IntelliTrend Mobile Zabbix Mediatype
