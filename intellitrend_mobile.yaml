@@ -1,6 +1,5 @@
 zabbix_export:
   version: '6.0'
-  date: '2024-01-31T09:11:55Z'
   media_types:
     - name: 'IntelliTrend Mobile'
       type: WEBHOOK
@@ -43,7 +42,16 @@ zabbix_export:
           
           var bodystr = JSON.stringify(body);
           Zabbix.Log(4, logtag + 'Request: ' + bodystr);
-          return req.post("https://push.intellitrend.de/zabbix/device/push", bodystr);
+          var respstr = req.post("https://push.intellitrend.de/zabbix/device/push", bodystr);
+          Zabbix.Log(4, logtag + 'Response:' + respstr);
+          Zabbix.Log(4, logtag + 'Response Code:' + req.getStatus());
+        
+          if (req.getStatus() >= 300 || req.getStatus() < 200) {
+              var resp = JSON.parse(respstr);
+              throw 'error: ' + resp.error;
+          }
+        
+          return "sent";
         } catch (error) {
             Zabbix.Log(3, logtag + 'ERROR: ' + error);
             throw 'Sending failed: ' + error;
@@ -51,26 +59,34 @@ zabbix_export:
       message_templates:
         - event_source: TRIGGERS
           operation_mode: PROBLEM
-          subject: 'Problem: {EVENT.NAME}'
+          subject: '{TRIGGER.SEVERITY}: {TRIGGER.STATUS}: {EVENT.NAME}'
           message: |
-            Problem started at {EVENT.TIME} on {EVENT.DATE}
-            Problem name: {EVENT.NAME}
-            Host: {HOST.NAME}
-            Severity: {EVENT.SEVERITY}
-            Operational data: {EVENT.OPDATA}
-            Original problem ID: {EVENT.ID}
-            {TRIGGER.URL}
+            Trigger: {EVENT.NAME}
+            Trigger status: {TRIGGER.STATUS}
+            Trigger severity: {TRIGGER.SEVERITY}
+            Time: {TIME}
+            
+            Item values:
+            1. {ITEM.NAME1} ({HOST.NAME1}:{ITEM.KEY1}): {ITEM.VALUE1}
+            
+            Description:
+            {TRIGGER.DESCRIPTION}
         - event_source: TRIGGERS
           operation_mode: RECOVERY
-          subject: 'Resolved in {EVENT.DURATION}: {EVENT.NAME}'
+          subject: '[Recovered]: {EVENT.RECOVERY.NAME}'
           message: |
-            Problem has been resolved at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}
-            Problem name: {EVENT.NAME}
-            Problem duration: {EVENT.DURATION}
-            Host: {HOST.NAME}
-            Severity: {EVENT.SEVERITY}
-            Original problem ID: {EVENT.ID}
-            {TRIGGER.URL}
+            Trigger: {EVENT.RECOVERY.NAME}
+            Trigger status: {TRIGGER.STATUS}
+            Trigger severity: {TRIGGER.SEVERITY}
+            Time: {TIME}
+            
+            Item values:
+            1. {ITEM.NAME1} ({HOST.NAME1}:{ITEM.KEY1}): {ITEM.VALUE1}
+            
+            Note:
+            The problem has been fixed. The status has changed from "{TRIGGER.SEVERITY}" to {TRIGGER.STATUS}.  
+            
+            Under "Acknowledgements" you can view the confirmation from the relevant employee. If no data is displayed here, this problem has not been acknowledged / viewed by any employee.
         - event_source: TRIGGERS
           operation_mode: UPDATE
           subject: 'Updated problem in {EVENT.AGE}: {EVENT.NAME}'
