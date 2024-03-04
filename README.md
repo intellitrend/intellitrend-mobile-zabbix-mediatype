@@ -2,8 +2,6 @@
 
 This Zabbix media type can be used to send push notifications to your smartphone or tablet via the **IntelliMon Mobile** for Zabbix app, available for IOS and Android.
 
-[TOC] 
-
 ## Requirements
 
 * Zabbix 6.0 or higher
@@ -129,7 +127,7 @@ Simply select the hostgroup you wish to be alerted for from the list, choose the
 
 DataForge will automatically configure the required trigger action in Zabbix, so you can easily manage alerts from your mobile device.
 
-If you are interested in DataForge, click [here](www.intellitrend.de/) to learn more. TODO: update link.
+If you are interested in DataForge, click [here](https://www.intellitrend.de/cms/en/dataforge/) to learn more.
 
 ### FAQ
 
