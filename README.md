@@ -159,6 +159,11 @@ If your alert shows up with any other error, try again after some time. If the i
 
 In case your alert does not show up in this list, your trigger action configuration is incorrect. You can validate that the setup works by performing a manual test as described below.
 
+#### When do I need to update my Zabbix user media?
+Your Zabbix user media requires an update whenever your persistent push identifier (PPI) changes. This can occurr when uninstalling, reinstalling, or updating the IntelliMon Mobile app and after using the `Reset device identifier` option.
+
+If your PPI has changed, simply sign in to an account on your Zabbix server using the IntelliMon Mobile app, navigate to the `Settings` page and update your user media by tapping the `User media` item and then selecting your device in the device selection modal as described in `Step 3`.
+
 #### How can I test the IntelliTrend Mobile media type?
 To test the IntelliTrend Mobile media type, begin by navigating to `Alerts` &rarr; `Media types` (Zabbix 6.4) or `Administration` &rarr; `Media types` (Zabbix 6.0) and clicking the test button for the IntelliTrend Mobile media type.
 This should cause the following modal to open:

@@ -16,6 +16,8 @@ zabbix_export:
           value: '{ALERT.SUBJECT}'
         - name: type
           value: problem
+      attempts: '1'
+      attempt_interval: 2s
       script: |
         var logtag = '[ IntelliTrend Mobile Webhook ] ';
         try {
