@@ -1,24 +1,24 @@
 # IntelliTrend Mobile Zabbix Mediatype
 
-This Zabbix media type can be used to send push notifications to your smartphone or tablet via the **IntelliMon Mobile** for Zabbix app, available for IOS and Android.
+This Zabbix media type can be used to send push notifications to your smartphone or tablet via the **IntelliTrend Mobile** for Zabbix app, available for IOS and Android.
 
 ## Requirements
 
 * Zabbix 6.0 or higher
-* IntelliMon Mobile for Zabbix App 6.8 or higher
+* IntelliTrend Mobile for Zabbix App 6.8 or higher
 
 ## Installation
 
-To setup push notifications, you must enable push notifications in your **IntelliMon Mobile** app, install the media type provided in this repository and create a Zabbix user media with the parameters provided by the IntelliMon Mobile app.
+To setup push notifications, you must enable push notifications in your **IntelliTrend Mobile** app, install the media type provided in this repository and create a Zabbix user media with the parameters provided by the IntelliTrend Mobile app.
 
-> **NOTE:** Depending on your Zabbix user type the IntelliMon Mobile app may be able to automatically create your user media for you. For more information see step 3.
+> **NOTE:** Depending on your Zabbix user type the IntelliTrend Mobile app may be able to automatically create your user media for you. For more information see step 3.
 
-If you don't have the IntelliMon Mobile app yet, you can get it here:
+If you don't have the IntelliTrend Mobile app yet, you can get it here:
 * [Google Play](https://play.google.com/store/apps/details?id=de.intellitrend.intellimonmobile&hl=en_US)
 * [Apple App Store](https://apps.apple.com/us/app/intellimon-mobile-for-zabbix/id1639789657)
 
 ### Step 1: Enable push notifications in the app
-Open the IntelliMon Mobile app, sign in using either a `Zabbix Direct` or `DataForge User` account if you have not already and then navigate to the `Settings` page using the sidebar, you should see the following screen:
+Open the IntelliTrend Mobile app, sign in using either a `Zabbix Direct` or `DataForge User` account if you have not already and then navigate to the `Settings` page using the sidebar, you should see the following screen:
 
 ![initial_state](img/initial_state.png)
 
@@ -54,15 +54,15 @@ After clicking import, the IntelliTrend Mobile media type should now appear in t
 ![zabbix_mediatype_imported](img/zabbix_mediatype_imported.png)
 
 #### 2.3 Check that the media type is detected
-To check if the media type has been correctly installed and is detected by the IntelliMon Mobile app, open the IntelliMon Mobile app, navigate away from the settings page and then back onto it, to refresh the shown data. After doing this, you should see the following screen, indicating that the Zabbix media type was found but the Zabbix user media is still not configured:
+To check if the media type has been correctly installed and is detected by the IntelliTrend Mobile app, open the IntelliTrend Mobile app, navigate away from the settings page and then back onto it, to refresh the shown data. After doing this, you should see the following screen, indicating that the Zabbix media type was found but the Zabbix user media is still not configured:
 
 ![enabled_no_usermedia](img/enabled_no_usermedia.png)
 
 ### Step 3: Setup your user media
-Now that the media type has been installed in your Zabbix server and is detected by the IntelliMon Mobile app, you need to set up your user media. There are two ways this can be done, depending on your user type within Zabbix.
+Now that the media type has been installed in your Zabbix server and is detected by the IntelliTrend Mobile app, you need to set up your user media. There are two ways this can be done, depending on your user type within Zabbix.
 
 #### Option 1: Privileged user (Zabbix user type `Admin` or `Superadmin`)
-If you have the User type Admin or the User type Superadmin, you can set up the required user media using the IntelliMon Mobile app's built-in convenience feature. To do this, simply tap on `Zabbix user media` on the settings page, this should open the Zabbix user media creation modal. There are two possible scenarios here:
+If you have the User type Admin or the User type Superadmin, you can set up the required user media using the IntelliTrend Mobile app's built-in convenience feature. To do this, simply tap on `Zabbix user media` on the settings page, this should open the Zabbix user media creation modal. There are two possible scenarios here:
 
 ##### First time setup
 If you have never setup push notifications for this user before, you should see the following screen:
@@ -101,14 +101,14 @@ In this modal, select the IntelliTrend Mobile media type and then paste the conf
 
 ![zabbix_usermedia_create_modal](img/zabbix_usermedia_create_modal.png)
 
-> **NOTE:** User media that were created automatically using the IntelliMon Mobile app also show up in the list of user media of their respective user in Zabbix
+> **NOTE:** User media that were created automatically using the IntelliTrend Mobile app also show up in the list of user media of their respective user in Zabbix
 
 ### Step 4: Configure notifications
 At this point, your settings page should look as follows, indicating that the Zabbix media type was found and the Zabbix user media configuration is ok:
 
 ![finished](img/finished.png)
 
-You can now sign in to the Zabbix Frontend and configure alerts with operations as you would for any other media type. Existing trigger actions that use the `Send only to: All` option will now also begin sending push notifications with the IntelliMon Mobile app.
+You can now sign in to the Zabbix Frontend and configure alerts with operations as you would for any other media type. Existing trigger actions that use the `Send only to: All` option will now also begin sending push notifications with the IntelliTrend Mobile app.
 
 For example, to only receive push notifications when a problem arises, simply configure a trigger action and then select the IntelliTrend Mobile media type from the list of media types. Of course, you can also select all media types if you do not want to limit alerts to push notifications:
 
@@ -116,7 +116,7 @@ For example, to only receive push notifications when a problem arises, simply co
 
 ### DataForge
 
-If you are a DataForge user, you can use our convenient alert management feature found under `Self Provisioning` &rarr; `Alerts`, to configure alerts with a few clicks, directly from the IntelliMon Mobile app.
+If you are a DataForge user, you can use our convenient alert management feature found under `Self Provisioning` &rarr; `Alerts`, to configure alerts with a few clicks, directly from the IntelliTrend Mobile app.
 
 ![dataforge_alerts](img/dataforge_alerts.png)
 
@@ -160,9 +160,9 @@ If your alert shows up with any other error, try again after some time. If the i
 In case your alert does not show up in this list, your trigger action configuration is incorrect. You can validate that the setup works by performing a manual test as described below.
 
 #### When do I need to update my Zabbix user media?
-Your Zabbix user media requires an update whenever your persistent push identifier (PPI) changes. This can occurr when uninstalling, reinstalling, or updating the IntelliMon Mobile app and after using the `Reset device identifier` option.
+Your Zabbix user media requires an update whenever your persistent push identifier (PPI) changes. This can occurr when uninstalling, reinstalling, or updating the IntelliTrend Mobile app and after using the `Reset device identifier` option.
 
-If your PPI has changed, simply sign in to an account on your Zabbix server using the IntelliMon Mobile app, navigate to the `Settings` page and update your user media by tapping the `User media` item and then selecting your device in the device selection modal as described in `Step 3`.
+If your PPI has changed, simply sign in to an account on your Zabbix server using the IntelliTrend Mobile app, navigate to the `Settings` page and update your user media by tapping the `User media` item and then selecting your device in the device selection modal as described in `Step 3`.
 
 #### How can I test the IntelliTrend Mobile media type?
 To test the IntelliTrend Mobile media type, begin by navigating to `Alerts` &rarr; `Media types` (Zabbix 6.4) or `Administration` &rarr; `Media types` (Zabbix 6.0) and clicking the test button for the IntelliTrend Mobile media type.
@@ -176,7 +176,7 @@ Set the `entity_id` field to a valid Zabbix event ID, which you can obtain by na
 
 Set the `severity` field to a valid numeric severity such as `2` for `warning`. Check [this](https://www.zabbix.com/documentation/current/en/manual/api/reference/event/object) documentation page and scroll down to the `severity` property if you are unsure about numeric severities.
 
-To set the `sendto` parameter, open the IntelliMon Mobile app, navigate to the `Settings` page, ensure that push notifications are enabled and then tap on `Zabbix user media`. In the user media modal, expand the `Create Zabbix user media manually` section and press the copy button to copy the configuration to your clipboard. Now paste this configuration into the media types `sendto` parameter.
+To set the `sendto` parameter, open the IntelliTrend Mobile app, navigate to the `Settings` page, ensure that push notifications are enabled and then tap on `Zabbix user media`. In the user media modal, expand the `Create Zabbix user media manually` section and press the copy button to copy the configuration to your clipboard. Now paste this configuration into the media types `sendto` parameter.
 
 Finally, press the `Test` button:
 
