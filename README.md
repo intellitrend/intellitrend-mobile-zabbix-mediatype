@@ -1,11 +1,11 @@
 # IntelliTrend Mobile Zabbix Mediatype
 
-This Zabbix media type can be used to send push notifications to your smartphone or tablet via the **IntelliTrend Mobile** for Zabbix app, available for IOS and Android.
+This Zabbix media type can be used to send push notifications from Zabbix to your smartphone or tablet via the **IntelliTrend Mobile** for Zabbix app, available for IOS and Android.
 
 ## Requirements
 
 * Zabbix 6.0 or higher
-* IntelliTrend Mobile for Zabbix App 6.8 or higher
+* IntelliTrend Mobile for Zabbix App 7.4 or higher
 
 ## Installation
 
