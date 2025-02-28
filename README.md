@@ -114,6 +114,8 @@ For example, to only receive push notifications when a problem arises, simply co
 
 ![zabbix_action](img/zabbix_action.png)
 
+> **NOTE:** The message body is limited to 1000 characters and the subject is limited to 300 characters. Beyond that limit, the message and subject will be truncated.
+
 ### DataForge
 
 If you are a DataForge user, you can use our convenient alert management feature found under `Self Provisioning` &rarr; `Alerts`, to configure alerts with a few clicks, directly from the IntelliTrend Mobile app.
