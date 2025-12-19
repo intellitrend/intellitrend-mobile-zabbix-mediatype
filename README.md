@@ -1,11 +1,11 @@
 # IntelliTrend Mobile Zabbix Mediatype
 
-This Zabbix media type can be used to send push notifications from Zabbix to your smartphone or tablet via the **IntelliTrend Mobile** for Zabbix app, available for IOS and Android.
+This Zabbix media type can be used to send push notifications to your smartphone or tablet via the **IntelliTrend Mobile** for Zabbix app, available for IOS and Android.
 
 ## Requirements
 
 * Zabbix 6.0 or higher
-* IntelliTrend Mobile for Zabbix App 7.4 or higher
+* IntelliTrend Mobile for Zabbix App 6.8 or higher
 
 ## Installation
 
@@ -18,19 +18,24 @@ If you don't have the IntelliTrend Mobile app yet, you can get it here:
 * [Apple App Store](https://apps.apple.com/us/app/intellimon-mobile-for-zabbix/id1639789657)
 
 ### Step 1: Enable push notifications in the app
-Open the IntelliTrend Mobile app, sign in using either a `Zabbix Direct` or `DataForge User` account if you have not already and then navigate to the `Settings` page using the sidebar, you should see the following screen:
+Open the IntelliTrend Mobile app, sign in using either a `Zabbix Direct` or `Prisma User` account if you have not already and then navigate to the `Settings` page using the sidebar, you should see the following screen:
 
-![initial_state](img/initial_state.png)
+![initial_state](img/notification_disabled.jpg)
 
 On this screen, press the `Push Notifications` toggle to enable Push Notifications. After pressing the toggle, the following modal should appear:
 
-![enable_modal](img/enable_modal.png)
+![enable_modal](img/enable_modal.jpg)
 
 Once the modal has appeared, press the enable button in the bottom right corner. Upon pressing this button, a modal from your device's operating system will appear, asking you to grant push notification permissions to the app. Make sure to grant the app this permission.
 
-At this point push notifications are enabled in your app, but both your Zabbix media type and your Zabbix user media are still not setup. You should now see the following screen on the settings page, note that the Zabbix media type was not found and the Zabbix user media is not configured yet:
+At this point push notifications are enabled in your app, but both your Zabbix media type and your Zabbix user media are still not setup.
 
-![enabled_no_mediatype_no_usermedia](img/enabled_no_mediatype_no_usermedia.png)
+You should now see one of the following two screens on the settings page:
+
+![enabled_no_mediatype_no_usermedia](img/initial_after_enable.png)
+
+If your Zabbix user has no permission to see the Zabbix media types (*mediatype.get* API call), the App is not able to check whether the Zabbix media type exists or not. Usually the **Admin** or **Superadmin** role is required to see Zabbix media types.  
+But no worries, regular Zabbix users are still able to use push notifications.
 
 ### Step 2: Install the media type in Zabbix
 The next step is to install the IntelliTrend Mobile media type from this repository in Zabbix.
@@ -54,12 +59,14 @@ After clicking import, the IntelliTrend Mobile media type should now appear in t
 ![zabbix_mediatype_imported](img/zabbix_mediatype_imported.png)
 
 #### 2.3 Check that the media type is detected
-To check if the media type has been correctly installed and is detected by the IntelliTrend Mobile app, open the IntelliTrend Mobile app, navigate away from the settings page and then back onto it, to refresh the shown data. After doing this, you should see the following screen, indicating that the Zabbix media type was found but the Zabbix user media is still not configured:
+To check if the media type has been correctly installed and is detected by the IntelliTrend Mobile app, open the IntelliTrend Mobile app, navigate away from the settings page and then back onto it, to refresh the shown data. In case your user has the required permissions, you should see the following screen, indicating that the Zabbix media type was found but the Zabbix user media is still not configured:
 
-![enabled_no_usermedia](img/enabled_no_usermedia.png)
+![enabled_no_usermedia](img/mediatype_found_usermedia_missing.jpg)
+
+When the App wasn't able to check whether the Zabbix media type exists or not, you can still use push notification. The App just wasn't able to confirm that the Zabbix media type has been imported correctly. 
 
 ### Step 3: Setup your user media
-Now that the media type has been installed in your Zabbix server and is detected by the IntelliTrend Mobile app, you need to set up your user media. There are two ways this can be done, depending on your user type within Zabbix.
+Now that the media type has been installed in your Zabbix server, you need to set up your user media. There are two ways this can be done, depending on your user type within Zabbix.
 
 #### Option 1: Privileged user (Zabbix user type `Admin` or `Superadmin`)
 If you have the User type Admin or the User type Superadmin, you can set up the required user media using the IntelliTrend Mobile app's built-in convenience feature. To do this, simply tap on `Zabbix user media` on the settings page, this should open the Zabbix user media creation modal. There are two possible scenarios here:
@@ -67,16 +74,16 @@ If you have the User type Admin or the User type Superadmin, you can set up the 
 ##### First time setup
 If you have never setup push notifications for this user before, you should see the following screen:
 
-![usermedia_modal_no_devices](img/usermedia_modal_no_devices.png)
+![usermedia_modal_no_devices](img/usermedia_modal_create_button.jpg)
 
 In this case, simply tap the `Add new Zabbix user media` button to create a new user media in Zabbix. After creating a new user media, you should see the following screen, indicating that the media has been created and is bound to this app installation:
 
-![usermedia_modal_selected](img/usermedia_modal_selected.png)
+![usermedia_modal_selected](img/usermedia_selected.jpg)
 
 ##### Reactivation / Multiple devices
 If this is not the first push notification setup for this Zabbix user, there may already be devices listed in addition to the `Add new Zabbix user media` button:
 
-![usermedia_modal_multiple_devices](img/usermedia_modal_multiple_devices.png)
+![usermedia_modal_multiple_devices](img/usermedia_select_existing.jpg)
 
 In this case, look for your current device in the list of devices and simply tap it to bind it to your current app installation. If your current device does not appear in the list simply tap the `Add new zabbix user media` button to create a new user media for this device.
 
@@ -84,14 +91,14 @@ In this case, look for your current device in the list of devices and simply tap
 
 After activating a user media from the list or creating a new user media, you should see the following screen, indicating that the user media was bound to this installation:
 
-![usermedia_modal_selected](img/usermedia_modal_selected.png)
+![usermedia_modal_selected](img/usermedia_selected.jpg)
 
 #### Option 2: Unprivileged user (Zabbix user type `User`)
-If you do not have the user type Admin or the user type Superadmin, you do not have the required permissions to edit Zabbix user media yourself. In this case, you will need the assistance of your Zabbix administrator to create your user media in Zabbix.
+If you do not have the user type Admin or the user type Superadmin, you are not able to create the Zabbix user media yourself. In this case, you will need the assistance of your Zabbix administrator to create your user media in Zabbix.
 
 Tap on the `user media` item on the settings page, expand the `Create Zabbix user media manually` section and click the copy button to copy your configuration to the clipboard:
 
-![usermedia_manual](img/usermedia_manual.png)
+![usermedia_manual](img/usermedia_manual_create.jpg)
 
 Then provide this configuration string to your Zabbix administrator, so they can create a user media for you.
 
@@ -106,7 +113,7 @@ In this modal, select the IntelliTrend Mobile media type and then paste the conf
 ### Step 4: Configure notifications
 At this point, your settings page should look as follows, indicating that the Zabbix media type was found and the Zabbix user media configuration is ok:
 
-![finished](img/finished.png)
+![finished](img/notification_enabled_all_ok.jpg)
 
 You can now sign in to the Zabbix Frontend and configure alerts with operations as you would for any other media type. Existing trigger actions that use the `Send only to: All` option will now also begin sending push notifications with the IntelliTrend Mobile app.
 
@@ -114,27 +121,33 @@ For example, to only receive push notifications when a problem arises, simply co
 
 ![zabbix_action](img/zabbix_action.png)
 
-> **NOTE:** The message body is limited to 1000 characters and the subject is limited to 300 characters. Beyond that limit, the message and subject will be truncated.
+### IntelliTrend Prisma
 
-### DataForge
+If you are a IntelliTrend Prisma user, you can use our convenient alert management feature found under `Self Provisioning` &rarr; `Alerts`, to configure alerts with a few clicks, directly from the IntelliTrend Mobile app.
 
-If you are a DataForge user, you can use our convenient alert management feature found under `Self Provisioning` &rarr; `Alerts`, to configure alerts with a few clicks, directly from the IntelliTrend Mobile app.
-
-![dataforge_alerts](img/dataforge_alerts.png)
+![prisma_alerts](img/prisma_alerts.png)
 
 Simply select the hostgroup you wish to be alerted for from the list, choose the minimum severity you would like to be alerted at, select if you would also like to be alerted for subgroups and click subscribe:
 
 
-![dataforge_alerts_modal](img/dataforge_alerts_modal.png)
+![prisma_alerts_modal](img/prisma_alerts_modal.png)
 
-DataForge will automatically configure the required trigger action in Zabbix, so you can easily manage alerts from your mobile device.
+Prisma will automatically configure the required trigger action in Zabbix, so you can easily manage alerts from your mobile device.
 
-If you are interested in DataForge, click [here](https://www.intellitrend.de/cms/en/dataforge/) to learn more.
+If you are interested in IntelliTrend Prisma, click [here](https://www.intellitrend.de/content/en/prisma/) to learn more.
 
 ### FAQ
 
-#### Why can regular Zabbix user (user type user) not add the user media through the app?
-Zabbix does not allow users that do not have either the user type admin or superadmin to create user media, even if they are creating it for themselves.
+#### Why can regular Zabbix users (user type `user`) not add the user media through the app?
+Unfortunately regular Zabbix users are not able to see media types, which are required when adding a user media. Without knowing which ID our **IntelliTrend Mobile** media type has, it is not possible to automatically add the user media for you. Because of that, the feature to create the user media automatically is only available to Zabbix admins or superadmins.
+
+But this doesn't mean regular Zabbix users are not able to use push notification. A Zabbix administrator can still add your Zabbix user media manually in Zabbix. To do so, follow the steps when clicking on **User media** and then **Create Zabbix user media manually** in the App.
+
+#### I can't overwrite my existing user media, why?
+
+Since Zabbix version 7.0.2, regular Zabbix users (user type `user`) can no longer update their own user medias. In that case you should contact your Zabbix administrator
+and ask him to update your user media for you with your new **Send to** value. You can find that value when expanding the **Create Zabbix user media manually** section in the
+**User media** modal.
 
 #### Can I rename the 'IntelliTrend Mobile' media type after importing it?
 No. Our app checks for the media type by name, so renaming it will cause the app to no longer detect the media type.
@@ -147,7 +160,9 @@ If you are having trouble getting push notifications to work, you can perform th
 
 Navigate to the `Settings` page in the IntelliTrend Mobile app and ensure that your push notification section looks as follows, indicating that push notifications are enabled, the push media type is detected and that the user media exists and is up-to-date:
 
-![finished](img/finished.png)
+![finished](img/notification_enabled_all_ok.jpg)
+
+If your user has no permission to see Zabbix media types, the App will not be able to check whether or not the **IntelliTrend Mobile** media type exists or not. In that case you should make sure the **IntelliTrend Mobile** media type exists on your Zabbix server and your user media is using it.
 
 **Step 2: Check for trigger action errors in Zabbix**
 
@@ -162,7 +177,7 @@ If your alert shows up with any other error, try again after some time. If the i
 In case your alert does not show up in this list, your trigger action configuration is incorrect. You can validate that the setup works by performing a manual test as described below.
 
 #### When do I need to update my Zabbix user media?
-Your Zabbix user media requires an update whenever your persistent push identifier (PPI) changes. This can occurr when uninstalling, reinstalling, or updating the IntelliTrend Mobile app and after using the `Reset device identifier` option.
+Your Zabbix user media requires an update whenever your persistent push identifier (PPI) changes. This can occur when uninstalling, reinstalling, or updating the IntelliTrend Mobile app and after using the `Reset device identifier` option.
 
 If your PPI has changed, simply sign in to an account on your Zabbix server using the IntelliTrend Mobile app, navigate to the `Settings` page and update your user media by tapping the `User media` item and then selecting your device in the device selection modal as described in `Step 3`.
 
